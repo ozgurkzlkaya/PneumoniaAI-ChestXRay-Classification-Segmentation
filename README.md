@@ -1,4 +1,4 @@
-# Pneumonia AI — Chest X-Ray Classification & Lung Segmentation
+﻿# Pneumonia AI — Chest X-Ray Classification & Lung Segmentation
 
 **Üç sınıflı pnömoni sınıflandırması · Akciğer segmentasyonu · Ablasyon deneyleri · Model hata analizi · Streamlit**
 
@@ -252,7 +252,7 @@ Ek deney modelleri `experiments/` altındaki ilgili koşul klasörlerinde bulunu
 - **Teslim ZIP'i:** Model ağırlıklarını, uygulama dosyalarını, gerekli deney raporlarını ve 875 doğrulama görüntüsünü içerir.
 - **GitHub kaynak kod deposu:** Kod, açıklamalar ve uygun boyuttaki deney çıktıları için hazırlanır. Büyük `.keras` dosyaları ve görüntü verileri ilk aşamada hariç tutulabilir.
 
-**Model indirme bağlantısı:** Henüz yayımlanmadı.
+**Model indirme bağlantısı:** [Pneumonia AI v1.0.0 - Model Weights](https://github.com/ozgurkzlkaya/PneumoniaAI-ChestXRay-Classification-Segmentation/releases/tag/v1.0.0). Bu sürümde 11 Keras modeli ve dosyaların orijinal konumlarını ve SHA-256 değerlerini içeren model_manifest.csv bulunmaktadır.
 
 **Veri erişimi:** Veri setlerinin resmî kaynaklarından, kullanım koşulları ve lisansları doğrulanarak edinilmelidir. Veri görüntülerini izinsiz yeniden dağıtmayın; hasta bilgisi içeren dosyaları yayımlamayın.
 
@@ -273,3 +273,4 @@ Ek deney modelleri `experiments/` altındaki ilgili koşul klasörlerinde bulunu
 ---
 
 *Pneumonia AI — Medical Image Processing / Deep Learning Academic Project*
+
