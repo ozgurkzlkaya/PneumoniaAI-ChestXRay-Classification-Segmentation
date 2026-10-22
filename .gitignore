@@ -46,3 +46,6 @@ reports/project_archive/
 
 # Medical visual review images
 experiments/classification_error_analysis/validation/shared_error_analysis/visual_review/*.jpg
+
+# GitHub release packages
+release_models_*/
