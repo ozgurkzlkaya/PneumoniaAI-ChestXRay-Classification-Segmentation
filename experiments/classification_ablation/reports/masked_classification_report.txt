@@ -1,0 +1,17 @@
+Accuracy: 0.667429
+Macro F1: 0.667485
+
+              precision    recall  f1-score   support
+
+      NORMAL     0.9860    0.5875    0.7363       240
+   BACTERIAL     0.8095    0.6930    0.7468       417
+       VIRAL     0.4107    0.7064    0.5194       218
+
+    accuracy                         0.6674       875
+   macro avg     0.7354    0.6623    0.6675       875
+weighted avg     0.7586    0.6674    0.6872       875
+
+Confusion Matrix:
+[[141   6  93]
+ [  0 289 128]
+ [  2  62 154]]

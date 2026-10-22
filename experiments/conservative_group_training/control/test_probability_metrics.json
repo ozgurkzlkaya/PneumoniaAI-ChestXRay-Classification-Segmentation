@@ -1,0 +1,23 @@
+{
+  "evaluation": "retrospective_internal_test",
+  "sample_count": 876,
+  "per_class": {
+    "NORMAL": {
+      "roc_auc": 0.9910395330256269,
+      "average_precision": 0.9797370622308015,
+      "positive_count": 237
+    },
+    "BACTERIAL": {
+      "roc_auc": 0.8880539297658863,
+      "average_precision": 0.8460584375034129,
+      "positive_count": 416
+    },
+    "VIRAL": {
+      "roc_auc": 0.842156586709152,
+      "average_precision": 0.63705955986631,
+      "positive_count": 223
+    }
+  },
+  "macro_roc_auc": 0.9070833498335551,
+  "macro_average_precision": 0.8209516865335081
+}

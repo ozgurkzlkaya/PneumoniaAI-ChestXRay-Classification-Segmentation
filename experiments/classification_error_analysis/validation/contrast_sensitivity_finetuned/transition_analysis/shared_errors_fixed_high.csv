@@ -1,0 +1,10 @@
+﻿file,actual,pred_original,pred_high
+dataset/validation/normal/normal2-im-0765-0001.jpeg,NORMAL,VIRAL,NORMAL
+dataset/validation/normal/normal2-im-1437-0001.jpeg,NORMAL,VIRAL,NORMAL
+dataset/validation/viral/person1169_virus_1968.jpeg,VIRAL,BACTERIAL,VIRAL
+dataset/validation/viral/person126_virus_255.jpeg,VIRAL,BACTERIAL,VIRAL
+dataset/validation/viral/person1420_virus_2431.jpeg,VIRAL,BACTERIAL,VIRAL
+dataset/validation/viral/person1458_virus_2503.jpeg,VIRAL,BACTERIAL,VIRAL
+dataset/validation/viral/person1489_virus_2594.jpeg,VIRAL,NORMAL,VIRAL
+dataset/validation/viral/person588_virus_1134.jpeg,VIRAL,BACTERIAL,VIRAL
+dataset/validation/viral/person842_virus_1483.jpeg,VIRAL,BACTERIAL,VIRAL

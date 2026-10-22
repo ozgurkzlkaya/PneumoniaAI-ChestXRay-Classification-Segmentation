@@ -1,0 +1,7 @@
+﻿condition,class,n,fixed,broken,net
+low,NORMAL,240,0,8,-8
+low,BACTERIAL,417,13,3,10
+low,VIRAL,218,3,2,1
+high,NORMAL,240,7,1,6
+high,BACTERIAL,417,0,29,-29
+high,VIRAL,218,8,3,5

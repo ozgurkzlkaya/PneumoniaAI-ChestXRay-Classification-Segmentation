@@ -1,0 +1,48 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+.venv/
+.venv-*/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Datasets
+dataset/
+dataset_group_safe/
+dataset_group_conservative/
+segmentation_dataset/
+reference_segmentation/
+*.dcm
+
+# Model weights
+*.keras
+*.h5
+*.hdf5
+*.ckpt
+*.weights
+
+# Archives and backups
+*.zip
+*.bak
+*.tmp
+backups/
+
+# Local reports and caches
+reports/project_archive/
+
+# Medical visual review images
+experiments/classification_error_analysis/validation/shared_error_analysis/visual_review/*.jpg
