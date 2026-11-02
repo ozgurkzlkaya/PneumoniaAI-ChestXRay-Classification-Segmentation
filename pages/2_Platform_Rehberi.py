@@ -1,166 +1,231 @@
-"""Pneumonia AI | Proje Hakkında. Yalnızca akademik araştırma amaçlıdır."""
-from pathlib import Path
-import base64
-import html
-import streamlit as st
-
-ROOT = Path(__file__).resolve().parents[1]
-LOGO = ROOT / 'assets' / 'pneumonia_ai_logo.png'
-st.set_page_config(page_title='Pneumonia AI | Proje Hakkında', page_icon=str(LOGO) if LOGO.exists() else '🫁', layout='wide', initial_sidebar_state='expanded')
-
-try:
-    from medical_theme import apply_medical_theme, render_medical_sidebar
-except ImportError:
-    apply_medical_theme = None
-    render_medical_sidebar = None
-
-if apply_medical_theme:
-    apply_medical_theme()
-if render_medical_sidebar:
-    render_medical_sidebar()
-else:
-    with st.sidebar:
-        if LOGO.exists():
-            st.image(str(LOGO), width=92)
-        st.markdown('### Pneumonia AI')
-        st.caption('TIBBİ GÖRÜNTÜLEME ARAŞTIRMASI')
-        st.page_link('app.py', label='Görüntü Analizi', icon=':material/home:')
-        st.page_link('pages/1_Hata_Analizi.py', label='Hata Analizi', icon=':material/analytics:')
-        st.page_link('pages/2_Platform_Rehberi.py', label='Proje Hakkında', icon=':material/menu_book:')
-        st.caption('Akademik araştırma prototipi. Klinik tanı aracı değildir.')
-
-logo_b64 = base64.b64encode(LOGO.read_bytes()).decode('ascii') if LOGO.exists() else ''
-logo_html = f'<img class="pa-logo" src="data:image/png;base64,{logo_b64}" alt="Pneumonia AI logosu">' if logo_b64 else '<div class="pa-logo-placeholder">🫁</div>'
-
-st.markdown('''<style>
-:root { --pa-ink:#0b3446; --pa-teal:#008f92; --pa-muted:#6f8795; --pa-line:#dcebee; }
-[data-testid="stAppViewContainer"] { background:linear-gradient(118deg,#f6fbfc 0%,#f1f9fa 72%,#e9f7f6 100%); }
-[data-testid="stMainBlockContainer"] {max-width:1440px;padding-top:2.3rem;padding-bottom:5rem;}
-.pa-hero {background:linear-gradient(110deg,#ffffff 0%,#f4fbfd 54%,#d6eff2 100%);border:1px solid #dcebef;border-radius:22px;padding:26px 32px;box-shadow:0 10px 34px rgba(23,84,98,.055);display:flex;gap:23px;align-items:center;margin-bottom:16px;}
-.pa-logo {width:90px;height:90px;object-fit:contain;border-radius:20px;filter:drop-shadow(0 5px 9px rgba(0,83,91,.12));}
-.pa-logo-placeholder {font-size:50px;}
-.pa-eyebrow {font-size:11px;letter-spacing:2.6px;color:#008f92;font-weight:800;margin-bottom:8px;}
-.pa-hero h1 {font-size:clamp(30px,3.1vw,47px);line-height:1.1;letter-spacing:-1.2px;color:#0b3446;margin:0 0 8px;font-weight:800;}
-.pa-sub {color:#678493;font-size:15px;margin:0;}
-.pa-hero-right {margin-left:auto;max-width:320px;color:#195c6c;border-left:3px solid #009da1;padding-left:17px;font-size:15px;line-height:1.55;}
-.pa-panel {background:rgba(255,255,255,.87);border:1px solid #dcebef;border-radius:16px;padding:20px 22px;height:100%;box-shadow:0 3px 13px rgba(30,84,98,.035);}
-.pa-panel h3 {font-size:18px;margin:0 0 11px;color:#0b3446;}
-.pa-panel p,.pa-panel li {color:#5a7482;font-size:14px;line-height:1.65;}
-.pa-panel p {margin:0;}
-.pa-section {font-size:24px;font-weight:800;letter-spacing:-.4px;color:#0b3446;margin:24px 0 8px;}
-.pa-desc {font-size:14px;color:#79909c;margin:0 0 18px;line-height:1.6;}
-.pa-kpi {border:1px solid #dcebef;background:#fff;border-radius:14px;padding:15px 17px;min-height:110px;}
-.pa-kpi-label {font-size:12px;color:#67828e;}
-.pa-kpi-value {font-size:27px;font-weight:800;color:#007f83;margin-top:6px;}
-.pa-kpi-note {font-size:12px;color:#80939d;}
-.pa-flow {text-align:center;background:#fff;border:1px solid #dcebef;border-radius:15px;padding:18px 10px;min-height:164px;}
-.pa-flow-number {display:inline-flex;align-items:center;justify-content:center;background:#078e9e;color:white;width:30px;height:30px;border-radius:50%;font-weight:800;font-size:13px;}
-.pa-flow-title {font-size:15px;font-weight:800;color:#143d4d;margin:13px 0 7px;}
-.pa-flow-text {font-size:12px;color:#67828e;line-height:1.5;}
-.pa-chip {display:inline-block;padding:5px 11px;border-radius:7px;font-weight:700;font-size:12px;margin-right:8px;}
-.pa-normal {background:#dff8e9;color:#167d4a;}.pa-bacterial {background:#fff0db;color:#a05b0e;}.pa-viral {background:#ece5ff;color:#6842ad;}
-.pa-banner {padding:17px 20px;border-radius:13px;background:#e4f2fd;border:1px solid #d4e7f8;color:#125b8a;font-size:14px;line-height:1.6;}
-.pa-warning {padding:17px 20px;border-radius:13px;background:#fff9e4;border:1px solid #f4e7ad;color:#795b16;font-size:14px;line-height:1.6;}
-.pa-row {padding:10px 0;border-bottom:1px solid #e6eff1;color:#466877;font-size:14px;}
-.pa-row:last-child {border-bottom:none;}
-.pa-strong {font-weight:750;color:#103d50;}
-div[data-testid="stTabs"] button {font-weight:650;}
-@media(max-width:800px){.pa-hero{padding:19px;gap:12px;}.pa-logo{width:58px;height:58px;}.pa-hero-right{display:none;}}
-</style>''', unsafe_allow_html=True)
-
-def panel(title, body):
-    st.markdown(f'<div class="pa-panel"><h3>{title}</h3>{body}</div>', unsafe_allow_html=True)
-
-def section(title, desc=''):
-    st.markdown(f'<div class="pa-section">{title}</div>' + (f'<div class="pa-desc">{desc}</div>' if desc else ''), unsafe_allow_html=True)
-
-def kpi(label, value, note=''):
-    st.markdown(f'<div class="pa-kpi"><div class="pa-kpi-label">{label}</div><div class="pa-kpi-value">{value}</div><div class="pa-kpi-note">{note}</div></div>', unsafe_allow_html=True)
-
-st.markdown(f'''<div class="pa-hero">{logo_html}<div><div class="pa-eyebrow">TIBBİ GÖRÜNTÜLEME / ARAŞTIRMA PLATFORMU</div><h1>Pneumonia AI</h1><p class="pa-sub">Akciğer X-Ray Analizi | Proje Hakkında ve Kullanım Rehberi</p></div><div class="pa-hero-right">Derin öğrenme ile pnömoni sınıflandırması, akciğer segmentasyonu ve model değerlendirmesi.</div></div>''', unsafe_allow_html=True)
-st.markdown('<div class="pa-banner"><b>Akademik araştırma prototipi.</b> Bu uygulama klinik tanı, tedavi veya hasta triyajı için kullanılmaz. Model skorları kalibre edilmiş klinik olasılıklar değildir.</div>', unsafe_allow_html=True)
-
-tabs = st.tabs(['Proje Hakkında','Veri Seti','Model Mimarileri','Değerlendirme Metrikleri','Sonuçların Yorumlanması','Kullanım Rehberi'])
-with tabs[0]:
-    section('Platforma Genel Bakış', 'X-Ray görüntülerinden üç sınıflı sınıflandırma, segmentasyon, hata analizi ve model karşılaştırması.')
-    a,b,c=st.columns(3)
-    with a: panel('🎯 Projenin Amacı','<p>Akciğer röntgenlerinden <b>NORMAL, BACTERIAL ve VIRAL</b> sınıflarını ayırt eden derin öğrenme modellerinin araştırma amaçlı değerlendirilmesi.</p>')
-    with b: panel('🫁 Segmentasyon','<p>U-Net V3, görüntüdeki akciğer alanları için tahmini maske üretir. Maske bir uzman referans anotasyonu değildir.</p>')
-    with c: panel('📊 Hata Analizi','<p>Yanlış tahminler, yüksek skorlu hatalar, karışıklık matrisleri ve kalibrasyon bulguları ayrıntılı incelenir.</p>')
-    section('Proje İş Akışı', 'Kullanıcının görüntü yüklemesinden sonuçların incelenmesine kadar beş temel adım.')
-    cols=st.columns(5)
-    steps=[('Röntgen Girişi','Akciğer görüntüsü yüklenir.'),('Ön İşleme','Görüntü modele uygun biçime dönüştürülür.'),('Segmentasyon','U-Net V3 akciğer maskesi üretir.'),('Sınıflandırma','Modeller üç sınıfa ait skor üretir.'),('Sonuç ve Analiz','Tahminler, hatalar ve metrikler incelenir.')]
-    for i,(title,description) in enumerate(steps):
-        with cols[i]:
-            st.markdown(f'<div class="pa-flow"><span class="pa-flow-number">{i+1}</span><div class="pa-flow-title">{title}</div><div class="pa-flow-text">{description}</div></div>',unsafe_allow_html=True)
-    section('Araştırmanın Kapsamı')
-    c1,c2=st.columns(2)
-    with c1: panel('Sınıflandırma','<div class="pa-row"><span class="pa-chip pa-normal">NORMAL</span>Pnömoni etiketi bulunmayan görüntüler</div><div class="pa-row"><span class="pa-chip pa-bacterial">BACTERIAL</span>Bakteriyel pnömoni etiketi</div><div class="pa-row"><span class="pa-chip pa-viral">VIRAL</span>Viral pnömoni etiketi</div>')
-    with c2: panel('Araştırma Bileşenleri','<div class="pa-row">4 sınıflandırma modeli</div><div class="pa-row">2 ablasyon deneyi</div><div class="pa-row">U-Net V3 akciğer segmentasyonu</div><div class="pa-row">Hata analizi, ROC ve kalibrasyon değerlendirmesi</div>')
-    st.markdown('<div class="pa-warning" style="margin-top:18px"><b>Önemli:</b> X-Ray görüntüsünden bakteriyel veya viral etkenin kesin tanısı konulamaz. Sonuçlar yalnızca veri kümesindeki etiketlere ilişkin model tahminleridir.</div>',unsafe_allow_html=True)
-with tabs[1]:
-    section('Veri Seti','Kaggle Chest X-Ray görüntülerine dayanan, kayıtlı eğitim dağılımı.')
-    c=st.columns(4)
-    for col,(label,value,note) in zip(c,[('Eğitim toplamı','4.021','Görüntü'),('NORMAL','1.089','%27,1'),('BACTERIAL','1.878','%46,7'),('VIRAL','1.054','%26,2')]):
-        with col:kpi(label,value,note)
-    st.markdown('')
-    st.bar_chart({'NORMAL':1089,'BACTERIAL':1878,'VIRAL':1054},horizontal=True)
-    section('Doğrulama ve Test Kümeleri')
-    a,b=st.columns(2)
-    with a:panel('Ortak doğrulama raporları','<p>Baseline CNN, MobileNetV2 ve Fine-Tuned MobileNetV2 için <b>875 görüntü</b> içeren kayıtlı doğrulama sonuçları.</p>')
-    with b:panel('Conservative Group testi','<p>Conservative Group modelinin <b>876 görüntü</b> içeren ayrı retrospektif test kümesi.</p>')
-    st.warning('875 görüntülük doğrulama ve 876 görüntülük test kümeleri farklıdır; bu sonuçlardan doğrudan model üstünlüğü çıkarılamaz. Eğitim kümesi için 4.021 sayısı test kümesiyle karıştırılmamalıdır.')
-with tabs[2]:
-    section('Model Mimarileri','Kullanılan yaklaşımlar ve bunların araştırmadaki rolleri.')
-    models=[('Baseline CNN','Konvolüsyon katmanlarıyla görüntü özellikleri öğrenen temel karşılaştırma ağı.'),('MobileNetV2','Hafif CNN mimarisi. Transfer öğrenme ile önceden öğrenilmiş görsel temsillerden yararlanır.'),('Fine-Tuned MobileNetV2','Önceden eğitilmiş katmanların bir bölümünün de veri kümesine uyarlanabildiği model.'),('MobileNetV2 – Conservative Group','Ayrı retrospektif test raporuyla değerlendirilen model. Yöntem ayrıntıları deney kayıtlarından doğrulanmalıdır.'),('U-Net V3','Piksel düzeyinde tahmini akciğer maskesi üretir; sınıflandırıcı değildir.')]
-    for i in range(0,len(models),2):
-        cols=st.columns(2)
-        for col,(name,desc) in zip(cols,models[i:i+2]):
-            with col:panel(name,f'<p>{desc}</p>')
-    section('Ablasyon Deneyleri')
-    st.info('İki ablasyon deneyi, model bileşenleri veya işlem tercihlerinin etkisini incelemek içindir. Deneylerin tam değişkenleri uygulamadaki kayıtlı raporlardan teyit edilmelidir.')
-with tabs[3]:
-    section('Değerlendirme Metrikleri','Her göstergenin neyi ölçtüğü ve nasıl yorumlanması gerektiği.')
-    items=[('Doğruluk (Accuracy)','Doğru tahmin sayısı / toplam örnek sayısı. Sınıf dengesizliğinde tek başına yanıltabilir.'),('Kesinlik (Precision)','Bir sınıf olarak tahmin edilenlerin gerçekten o sınıfa ait olma oranı.'),('Duyarlılık (Recall)','Gerçekte ilgili sınıfa ait örneklerin ne kadarının yakalandığı.'),('F1 Skoru','Precision ve Recall değerlerinin harmonik ortalaması.'),('Makro F1','Her sınıfın F1 değerinin eşit ağırlıklı ortalaması.'),('Dengeli Doğruluk','Sınıf bazlı duyarlılıkların ortalaması.'),('Karmaşıklık Matrisi','Satırlar gerçek, sütunlar tahmin sınıflarıdır. Köşegen doğru, diğer hücreler hatalı tahminleri gösterir.'),('ROC-AUC','Farklı eşiklerde sınıfları ayırabilme yeteneği. %90 AUC, %90 doğruluk değildir.'),('Kesinlik–Duyarlılık Eğrisi','Sınıflandırma eşiğine göre kesinlik ve duyarlılık arasındaki değişim.'),('ECE / Kalibrasyon Hatası','Skor aralıklarında ortalama model skoru ile gözlenen doğruluk farkı. Düşük olması tercih edilir.'),('Brier Skoru','Tahmin skorlarının gerçek etiketlere göre karesel hata ölçüsü. Düşük olması tercih edilir.'),('Yüksek Skorlu Hata','Modelin yüksek skor verdiği ancak yanlış sınıflandırdığı örnekler; klinik güveni göstermez.')]
-    for name,desc in items:
-        with st.expander(name):st.write(desc)
-    st.markdown('<div class="pa-warning"><b>Kalibrasyon notu:</b> Yüksek doğruluk, iyi kalibrasyon anlamına gelmez. Softmax değerleri klinik tanı olasılığı olarak kullanılmamalıdır.</div>',unsafe_allow_html=True)
-with tabs[4]:
-    section('Kayıtlı Deney Sonuçları','Değerler mevcut rapor ekranlarından aktarılmıştır; burada yeni bir model çalıştırılmamaktadır.')
-    st.markdown('**Üç modelin ortak doğrulama sonuçları (n = 875)**')
-    st.dataframe({'Model':['Baseline CNN','MobileNetV2','Fine-Tuned MobileNetV2'],'Doğruluk':['%77,71','%77,03','%78,29'],'Makro F1':['%74,93','%77,05','%78,45'],'Yanlış tahmin':[195,201,190]},hide_index=True,use_container_width=True)
-    section('Conservative Group | Ayrı Test Kümesi (n = 876)')
-    cols=st.columns(4)
-    for col,(label,value) in zip(cols,[('Doğruluk','%78,77'),('Makro F1','%78,59'),('Dengeli Doğruluk','%79,25'),('Makro ROC-AUC','%90,71')]):
-        with col:kpi(label,value)
-    st.warning('Bu test kümesi diğer üç modelin doğrulama kümesiyle aynı değildir; yüzdeleri doğrudan sıralamak metodolojik olarak doğru olmaz.')
-    section('Hata Örüntüleri')
-    a,b=st.columns(2)
-    with a:panel('Baseline CNN','<p>875 görüntünün <b>195</b> tanesi hatalı sınıflandırılmıştır. Karışıklık matrisinde gerçek VIRAL olan <b>113</b> görüntü BACTERIAL tahmin edilmiştir.</p>')
-    with b:panel('Conservative Group','<p>876 görüntünün <b>186</b> tanesi hatalıdır. Gerçek BACTERIAL olan <b>89</b> görüntü VIRAL tahmin edilmiştir.</p>')
-    st.info('Yüksek skorlu yanlış tahminler özellikle incelenmelidir. Bir örneğe %97 softmax skoru verilmesi, o tahminin klinik olarak %97 doğru olduğu anlamına gelmez.')
-with tabs[5]:
-    section('Uygulama Kullanım Rehberi','Analiz sayfaları ve sonuçları güvenli biçimde yorumlamak için adımlar.')
-    with st.expander('1. Görüntü Analizi',expanded=True):
-        st.write('Görüntü Analizi sayfasına geçin, akciğer X-Ray dosyası yükleyin ve analiz düğmesini kullanın. Model skorlarını karşılaştırın; skorları kesin tanı olarak yorumlamayın.')
-        st.page_link('app.py',label='Görüntü Analizine Git',icon=':material/home:')
-    with st.expander('2. Akciğer Segmentasyonu'):
-        st.write('Orijinal X-Ray, tahmini yeşil segmentasyon katmanı ve ikili akciğer maskesini inceleyin. Maske saydamlığı ve görünürlüğü kontrollerini kullanın. Maskeler uzman anotasyonu değildir.')
-    with st.expander('3. Model Karşılaştırması ve Ablasyon'):
-        st.write('Farklı sınıflandırıcıların çıktılarını ve kayıtlı deneylerini yan yana inceleyin. Aynı veri kümesi ve aynı ölçütler kullanıldığında kıyaslama daha anlamlıdır.')
-    with st.expander('4. Hata Analizi'):
-        st.write('Model seçin; gerçek/tahmin sınıfı filtrelerini ve skor eşiğini değiştirin. Yanlış sınıflandırılan görüntüleri, karışıklık matrisini, ROC ve kalibrasyon grafiklerini inceleyin.')
-        st.page_link('pages/1_Hata_Analizi.py',label='Hata Analizine Git',icon=':material/analytics:')
-    with st.expander('5. Sınırlamalar ve araştırma etiği'):
-        st.write('Model performansı farklı yaş grupları, hastaneler, cihazlar ve görüntü kalitelerinde değişebilir. Bağımsız dış doğrulama, veri sızıntısı kontrolü ve uzman incelemesi gereklidir.')
-    st.error('Bu uygulama tıbbi cihaz veya onaylı klinik karar destek sistemi değildir. Hasta tanısı, triyajı veya tedavisi için kullanmayın.')
-
-
-# PNEUMONIA_UI_V3: supplementary research documentation
-from medical_ui_enhancements import apply_extended_ui as _pa_ext_ui, model_guide as _pa_model_guide
-_pa_ext_ui()
-st.divider()
-_pa_model_guide(["Baseline CNN", "MobileNetV2", "Fine-Tuned MobileNetV2",
-                 "MobileNetV2 - Conservative Group", "U-Net V3",
-                 "Deney A - Orijinal", "Deney B - Maskeli"],
-                title="Model mimarileri: ayrıntılı teknik açıklamalar")
+from pathlib import Path
+import pandas as pd
+import altair as alt
+import streamlit as st
+from medical_theme import apply_medical_theme, render_medical_sidebar
+
+ROOT = Path(__file__).resolve().parents[1]
+LOGO = ROOT / "assets" / "pneumonia_ai_logo.png"
+st.set_page_config(
+    page_title="Pneumonia AI | Platform Rehberi",
+    page_icon=str(LOGO) if LOGO.exists() else "🫁",
+    layout="wide",
+)
+render_medical_sidebar()
+apply_medical_theme()
+
+CLASSES = ["NORMAL", "BACTERIAL", "VIRAL"]
+SPLITS = pd.DataFrame({
+    "Sınıf": CLASSES,
+    "Eğitim": [1089, 1878, 1054],
+    "Doğrulama": [240, 417, 218],
+    "Test": [254, 485, 221],
+})
+METRICS = [
+    ("Doğruluk (Accuracy)", "Tüm görüntüler arasında doğru tahmin edilenlerin oranıdır. Sınıflar dengesizse tek başına yeterli değildir."),
+    ("Kesinlik (Precision)", "Modelin belirli bir sınıf dediği görüntülerin ne kadarının gerçekten o sınıfta etiketlendiğidir."),
+    ("Duyarlılık (Recall)", "Gerçekte bir sınıfa ait görüntülerin ne kadarının doğru tanındığıdır."),
+    ("F1 skoru", "Kesinlik ve duyarlılığı birlikte özetleyen harmonik ortalamadır."),
+    ("Makro F1", "Üç sınıfın F1 skorlarının eşit ağırlıklı ortalamasıdır."),
+    ("Dengeli doğruluk", "Sınıfların duyarlılıklarının aritmetik ortalamasıdır."),
+    ("Karışıklık matrisi", "Satırlar gerçek etiketi, sütunlar model tahminini gösterir. Köşegen doğru, diğer hücreler yanlış tahminlerdir."),
+    ("ROC-AUC", "Bir sınıfı diğerlerinden ayırma becerisini farklı eşikler üzerinden özetler. %90 AUC, %90 doğruluk değildir."),
+    ("Kesinlik–duyarlılık eğrisi", "Karar eşiği değiştiğinde kesinlik ile duyarlılığın nasıl değiştiğini gösterir."),
+    ("ECE", "Tahmin skoruyla gözlenen doğruluk arasındaki uyumsuzluğun özetidir; hesaplama aralıklarına duyarlıdır."),
+    ("Brier skoru", "Tahmin edilen sınıf skorları ile gerçek etiketler arasındaki karesel hata ölçüsüdür. Düşük değer tercih edilir."),
+]
+
+head_left, head_right = st.columns([1, 11], vertical_alignment="center")
+with head_left:
+    if LOGO.exists():
+        st.image(str(LOGO), width=72)
+with head_right:
+    st.title("Pneumonia AI | Platform Rehberi")
+    st.caption("Projeyi tanıyın, yöntemi öğrenin ve araştırma sonuçlarını doğru yorumlayın.")
+
+st.info("Bu platform akademik araştırma prototipidir; tıbbi tanı, triyaj veya tedavi amacıyla kullanılmamalıdır.")
+st.markdown("**Bu rehber nasıl okunur?** İlk bölümden başlayarak projenin amacını, verileri, çalışma yöntemini ve sonuçlarını adım adım inceleyebilirsiniz. Teknik ayrıntılar açılır alanlarda tutulmuştur.")
+
+tabs = st.tabs([
+    "1 · Projeyi Tanıyın",
+    "2 · Veri Kümesi",
+    "3 · Nasıl Çalışıyor?",
+    "4 · Araştırma Sonuçları",
+    "5 · Kullanım Rehberi",
+    "6 · Bilimsel Sınırlılıklar",
+])
+
+with tabs[0]:
+    st.subheader("Bu proje ne yapıyor?")
+    st.write("Pneumonia AI, akciğer röntgenlerini veri kümesindeki **NORMAL**, **BACTERIAL** ve **VIRAL** etiketlerine göre sınıflandıran modelleri araştırmak için geliştirilmiştir. Ayrıca akciğer bölgesini tahmin eden bir segmentasyon modeli ve kayıtlı deneylerin hata analizleri bulunur.")
+    a, b, c, d = st.columns(4)
+    a.metric("Sınıf", "3")
+    b.metric("Karşılaştırma modeli", "4")
+    c.metric("Ablasyon kolu", "2")
+    d.metric("Segmentasyon", "U-Net V3")
+    st.markdown("#### Projenin gelişim süreci")
+    st.markdown(
+        "**1. Baseline CNN:** Temel karşılaştırma modeli oluşturuldu.\n\n"
+        "**2. MobileNetV2:** Transfer öğrenmeyle önceden öğrenilmiş görüntü özelliklerinden yararlanıldı.\n\n"
+        "**3. Fine-Tuned MobileNetV2:** Bazı önceden eğitilmiş katmanlar da veriye uyarlanarak yeniden eğitildi.\n\n"
+        "**4. U-Net V3:** Pnömoni sınıfı yerine akciğer bölgelerini tahmin eden segmentasyon modeli geliştirildi. Nihai yöntemin B3 kolunda bu maske, akciğer dışındaki alanların etkisini azaltmak için kullanıldı.\n\n"
+        "**5. Original + B3 ensemble:** Orijinal ve yumuşak maskelenmiş görüntülerden gelen iki model skoru birleştirildi."
+    )
+    st.caption("Bu aşamalar farklı deney kayıtlarını temsil eder. Her yeni aşamanın tek başına klinik iyileşme sağladığı sonucu çıkarılamaz.")
+    with st.expander("Etiketlerin klinik anlamı hakkında önemli not"):
+        st.write("BACTERIAL ve VIRAL burada veri kümesinin araştırma etiketleridir. Tek bir akciğer röntgeninden enfeksiyon etkeni kesin olarak belirlenemez; uzman değerlendirmesi ve gerektiğinde ek testler gerekir.")
+
+with tabs[1]:
+    st.subheader("Hangi görüntüler kullanıldı?")
+    a, b, c, d = st.columns(4)
+    a.metric("Eğitim", "4.021")
+    b.metric("Doğrulama", "875")
+    c.metric("Test", "960")
+    d.metric("Toplam", "5.856")
+    st.write("Eğitim, doğrulama ve test görüntüleri model geliştirme ve değerlendirme süreçlerinde farklı amaçlarla kullanılır. Bu sayılar kayıtlı veri bölünmelerini gösterir.")
+    st.bar_chart(SPLITS.set_index("Sınıf")[["Eğitim", "Doğrulama", "Test"]], use_container_width=True)
+    st.dataframe(SPLITS, hide_index=True, use_container_width=True)
+    with st.expander("NORMAL, BACTERIAL ve VIRAL ne demek?", expanded=True):
+        st.markdown(
+            "**NORMAL:** Veri kümesinde pnömoni etiketi bulunmayan görüntüler.\n\n"
+            "**BACTERIAL:** Bakteriyel pnömoni olarak etiketlenmiş görüntüler.\n\n"
+            "**VIRAL:** Viral pnömoni olarak etiketlenmiş görüntüler."
+        )
+        st.caption("Etiketler klinik tanı garantisi değildir.")
+    st.warning("Conservative Group için raporlanan 876 görüntülük retrospektif test, yukarıdaki 960 görüntülük test raporundan farklı bir değerlendirmedir. 5.856 toplamına ikinci kez eklenmez.")
+
+with tabs[2]:
+    st.subheader("Bir görüntü nasıl analiz ediliyor?")
+    st.markdown(
+        "**1. Görüntü yüklenir.** Kullanıcı akciğer X-Ray dosyasını seçer.\n\n"
+        "**2. Ön işleme yapılır.** Görüntü, seçilen modelin beklediği biçime getirilir.\n\n"
+        "**3. Akciğer bölgesi tahmin edilir.** U-Net V3, segmentasyon maskesi üretir.\n\n"
+        "**4. Sınıflandırma yapılır.** Modeller üç araştırma etiketi için skor üretir.\n\n"
+        "**5. Sonuçlar incelenir.** Sınıf skorları, segmentasyon ve kayıtlı hata analizleri değerlendirilir."
+    )
+    st.markdown("#### Nihai model nasıl çalışır?")
+    st.write("Nihai sistem **iki ayrı fine-tuned MobileNetV2** kullanır. Birinci model orijinal röntgeni, ikinci model ise akciğer dışındaki görüntü yoğunluğu azaltılmış sürümü değerlendirir. İki modelin üç sınıfa verdiği skorlar eşit ağırlıkla ortalanır.")
+    left, right = st.columns(2)
+    with left:
+        st.markdown("**Original kolu**")
+        st.write("Orijinal RGB görüntü → 224×224 yeniden boyutlandırma → fine-tuned MobileNetV2.")
+    with right:
+        st.markdown("**B3 kolu**")
+        st.write("U-Net V3 maskesi → maske düzeltme → akciğer dışı yoğunluğu %50'ye düşürme → B3 fine-tuned MobileNetV2.")
+    st.code("p_final = 0.50 * p_original + 0.50 * p_B3", language="python")
+    st.caption("Bu bir çoğunluk oylaması değil, üç sınıfa ait softmax skorlarının ağırlıklı ortalamasıdır. Skorlar kalibre edilmiş klinik olasılıklar değildir.")
+    with st.expander("Teknik ön işleme ayrıntıları"):
+        st.markdown(
+            "**Original:** RGB X-Ray, 224×224 bilinear yeniden boyutlandırma.\n\n"
+            "**B3:** Gri 256×256 görüntü, U-Net V3 maskesi, 0,5 eşik ve rafinasyon; maske orijinal boyuta en yakın komşu yöntemiyle aktarılır. Akciğer dışındaki RGB piksel yoğunluğu 0,50 ile çarpılır. Son görüntü 224×224 boyuta getirilir.\n\n"
+            "**Segmentasyon sınırı:** Maske tahminidir, uzman onaylı referans anotasyon değildir. Özellikle yoğun opasitelerde eksik veya hatalı bölgeler olabilir."
+        )
+    with st.expander("Diğer modeller ne işe yarıyor?"):
+        st.markdown(
+            "**Baseline CNN:** Başlangıç karşılaştırması.\n\n"
+            "**MobileNetV2:** Transfer öğrenme modeli.\n\n"
+            "**Fine-Tuned MobileNetV2:** Önceden eğitilmiş katmanların bir kısmı da uyarlanmış sürüm.\n\n"
+            "**Conservative Group:** Ayrı deney kapsamında değerlendirilmiş MobileNetV2 modelidir. 876 görüntülük retrospektif test sonuçları, diğer modellerin doğrulama sonuçlarıyla doğrudan sıralanamaz.\n\n"
+            "**U-Net V3:** Akciğer maskesi tahmini; sınıflandırma modelinden farklı görev."
+        )
+
+with tabs[3]:
+    st.subheader("Araştırma ne sonuç verdi?")
+    st.write("Aşağıdaki sayılar kayıtlı değerlendirme raporlarından alınmıştır. Bu rehber yeni eğitim veya tahmin çalıştırmaz.")
+    a, b, c = st.columns(3)
+    a.metric("Nihai doğrulama doğruluğu", "%80,34")
+    b.metric("Nihai makro F1", "%80,49")
+    c.metric("Doğru / toplam", "703 / 875")
+    st.markdown("**Basit yorum:** Doğrulama kümesindeki 875 görüntünün 703'ü veri kümesinin etiketiyle aynı sınıfta, 172'si farklı sınıfta tahmin edildi.")
+    st.markdown("#### Nihai modelin sınıflara göre duyarlılığı")
+    recall = pd.DataFrame({
+        "Sınıf": CLASSES,
+        "Doğrulama (%)": [92.92, 74.58, 77.52],
+        "Önceden incelenmiş test (%)": [95.28, 77.94, 70.59],
+    })
+    recall_long = recall.melt(
+        id_vars="Sınıf",
+        value_vars=["Doğrulama (%)", "Önceden incelenmiş test (%)"],
+        var_name="Değerlendirme",
+        value_name="Duyarlılık (%)",
+    )
+    recall_chart = (
+        alt.Chart(recall_long)
+        .mark_bar()
+        .encode(
+            x=alt.X("Sınıf:N", sort=CLASSES, title="Sınıf"),
+            xOffset=alt.XOffset("Değerlendirme:N"),
+            y=alt.Y("Duyarlılık (%):Q", scale=alt.Scale(domain=[0, 100]), axis=alt.Axis(values=[0, 20, 40, 60, 80, 100]), title="Duyarlılık (%)"),
+            color=alt.Color("Değerlendirme:N", title="Değerlendirme"),
+            tooltip=[
+                alt.Tooltip("Sınıf:N"),
+                alt.Tooltip("Değerlendirme:N"),
+                alt.Tooltip("Duyarlılık (%):Q", format=".2f"),
+            ],
+        )
+        .properties(height=330)
+    )
+    st.altair_chart(recall_chart, use_container_width=True)
+    st.caption("Duyarlılık: Gerçekte ilgili etiketi taşıyan görüntülerin doğru tanınma oranı. VIRAL sınıfındaki test duyarlılığı daha düşüktür.")
+    with st.expander("Ablasyon: Orijinal görüntü ve maskeleme karşılaştırması", expanded=True):
+        st.dataframe(pd.DataFrame([
+            {"Deney": "A · Orijinal görüntü", "Küme": "Doğrulama", "Görüntü": 875, "Doğruluk (%)": 79.89, "Makro F1 (%)": 79.75},
+            {"Deney": "B · Sert maske", "Küme": "Doğrulama", "Görüntü": 875, "Doğruluk (%)": 66.74, "Makro F1 (%)": 66.75},
+            {"Deney": "Original + B3 ensemble", "Küme": "Doğrulama", "Görüntü": 875, "Doğruluk (%)": 80.34, "Makro F1 (%)": 80.49},
+        ]), hide_index=True, use_container_width=True)
+        st.write("Sert maske, orijinal deneye göre **13,15 yüzde puan** daha düşük doğruluk verdi. Nihai ensemble orijinal deneyden yaklaşık **0,45 yüzde puan** yüksek çıktı. Ancak B3 yumuşak maske ile iki modelin skor ortalaması birlikte değiştiği için kazanım yalnızca maske etkisine bağlanamaz.")
+    with st.expander("Diğer kayıtlı model sonuçları"):
+        st.dataframe(pd.DataFrame([
+            {"Model": "Baseline CNN", "Değerlendirme": "875 doğrulama", "Doğruluk (%)": 77.71, "Makro F1 (%)": 74.93},
+            {"Model": "MobileNetV2", "Değerlendirme": "875 doğrulama", "Doğruluk (%)": 77.03, "Makro F1 (%)": 77.05},
+            {"Model": "Fine-Tuned MobileNetV2", "Değerlendirme": "875 doğrulama", "Doğruluk (%)": 78.29, "Makro F1 (%)": 78.45},
+            {"Model": "Conservative Group", "Değerlendirme": "876 ayrı test", "Doğruluk (%)": 78.77, "Makro F1 (%)": 78.59},
+            {"Model": "Nihai ensemble", "Değerlendirme": "960 incelenmiş test", "Doğruluk (%)": 80.83, "Makro F1 (%)": 80.10},
+        ]), hide_index=True, use_container_width=True)
+        st.caption("Farklı veri kümeleri ve deney protokolleri doğrudan model üstünlüğü karşılaştırması için eşdeğer değildir.")
+    with st.expander("Metrik sözlüğü: teknik kavramlar"):
+        for name, explanation in METRICS:
+            st.markdown(f"**{name}:** {explanation}")
+    st.caption("Detaylı hata tabloları, karışıklık matrisleri ve kalibrasyon grafikleri için Hata Analizi sayfasını kullanın.")
+
+with tabs[4]:
+    st.subheader("Uygulamayı nasıl kullanabilirsiniz?")
+    st.markdown(
+        "**Görüntü Analizi:** X-Ray yükleyin, nihai tahmin ve segmentasyon sonucunu görüntüleyin. Diğer modelleri ve ablasyon çıktılarını karşılaştırın.\n\n"
+        "**Hata Analizi:** Önce Genel Bakış ile başlayın. Hataları İncele bölümünde doğrulama/test seçin, karışıklık matrisini okuyun ve yanlış tahminleri filtreleyin. Model Karşılaştırması ve İleri Analiz bölümlerinde önceki deneyleri inceleyin.\n\n"
+        "**Platform Rehberi:** Yöntemin nasıl çalıştığını, kullanılan veri kümesini ve değerlendirme sınırlılıklarını öğrenin."
+    )
+    st.markdown("#### Bir tahmin ekranında nelere bakmalıyım?")
+    st.markdown(
+        "**Tahmin edilen etiket:** Modelin en yüksek skoru verdiği sınıftır.\n\n"
+        "**Üç sınıf skoru:** Model çıktılarının dağılımını gösterir; tanı olasılığı olarak yorumlanmamalıdır.\n\n"
+        "**Segmentasyon maskesi:** Modelin tahmin ettiği akciğer bölgesini gösterir; tıbbi anotasyon değildir.\n\n"
+        "**Hata Analizi:** Tekil tahminin güvenilirliğini garanti etmez, geçmiş kayıtlı örneklerdeki hata örüntülerini gösterir."
+    )
+    st.info("Araştırma amaçlı kullanımda görüntünün kaynağını, etiket bilgisini, model sürümünü ve değerlendirme protokolünü birlikte kaydetmek yeniden üretilebilirlik için önemlidir.")
+
+with tabs[5]:
+    st.subheader("Sonuçlar ne kadar güvenilir yorumlanabilir?")
+    st.error("Bu sistem klinik kullanıma onaylı değildir. Tek başına pnömoni tanısı koymaz, bakteriyel/viral etkeni kesinleştirmez ve hasta yönetiminde karar desteği olarak kullanılmamalıdır.")
+    st.markdown("**Veri kümesi sınırlılıkları:** Görüntülerin kaynağı, cihazı, hasta profili ve kalitesi değiştiğinde performans farklılaşabilir. Retrospektif doğruluk, dış merkezde klinik başarıyı kanıtlamaz.")
+    st.markdown("**Değerlendirme sınırı:** Doğrulama kümesi geliştirme boyunca tekrar kullanılmıştır; 960 görüntülük test kümesi de daha önce incelenmiştir. Bu nedenle sonuçlar tamamen dokunulmamış, bağımsız dış doğrulama olarak sunulmaz.")
+    with st.expander("Veri bütünlüğü denetiminin bulguları", expanded=True):
+        st.markdown(
+            "- Bölünmeler arasında **1 tam eşleşen görüntü grubu**.\n"
+            "- Aynı bölünme içinde **29 yinelenen görüntü grubu**.\n"
+            "- Bölünmeler arasında **52 olası hasta kimliği örtüşmesi adayı**.\n"
+            "- **51 görüntü yakalama adayı**.\n\n"
+            "Son iki bulgu doğrulanmış hasta çakışması değildir; ayrıca incelenmesi gereken adaylardır. "
+            "Aynı veya ilişkili görüntülerin farklı veri bölünmelerinde bulunması, ölçülen model başarısını olduğundan yüksek gösterebilir. "
+            "Bu nedenle veri bütünlüğü bulguları değerlendirme sonuçlarının yorumlanmasında dikkate alınmalıdır."
+        )
+    with st.expander("Yeniden üretilebilirlik ve rapor kaynakları"):
+        st.markdown(
+            "**Kayıtlı nihai doğrulama tahminleri:** `results/classification/ablation_uniform_evaluation/ensemble_50_50/ensemble_predictions.csv`\n\n"
+            "**Kayıtlı nihai test tahminleri:** `results/classification/fixed_ensemble_test_evaluation/test_predictions.csv`\n\n"
+            "Model ağırlıkları, veri bölünme manifestleri, ön işleme kodları ve deney ayarları sonuçlarla birlikte korunmalıdır. Arşive taşınan veri kopyaları nedeniyle eski betikler doğrudan çalışmayabilir; bu tek başına kayıtlı raporları geçersiz kılmaz."
+        )
+    st.warning("875 doğrulama, 960 test ve Conservative Group'un 876 örneklik ayrı testi aynı değerlendirme değildir. Farklı raporlar yalnızca aynı örnekler ve aynı protokol doğrulandığında doğrudan karşılaştırılabilir.")
+    st.caption("Bunlar araştırma sonuçlarıdır; uzman hekim değerlendirmesinin veya prospektif, hasta bazında ayrılmış dış doğrulamanın yerini tutmaz.")
+
+st.caption("Pneumonia AI · Akademik araştırma platformu · Bu rehber kayıtlı bulguları açıklar; yeni model eğitimi veya çıkarım çalıştırmaz.")

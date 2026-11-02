@@ -1,51 +1,155 @@
-﻿# Python
+# Publication allowlist: everything is excluded unless explicitly allowed below.
+*
+!/.gitignore
+!/README.md
+!/requirements.txt
+!/app.py
+!/medical_theme.py
+!/medical_ui_enhancements.py
+!/create_b2_expanded_dataset.py
+!/evaluate_ensemble.py
+
+!/pages/
+!/pages/**/
+!/pages/**/*.py
+!/scripts/
+!/scripts/**/
+!/scripts/**/*.py
+!/PneumoniaAI_Training_Source/
+!/PneumoniaAI_Training_Source/**/
+!/PneumoniaAI_Training_Source/**/*.py
+!/b3_preprocessing_source/
+!/b3_preprocessing_source/**/
+!/b3_preprocessing_source/**/*.py
+
+!/assets/
+!/assets/pneumonia_ai_logo.png
+!/.streamlit/
+!/.streamlit/config.toml
+
+# Deny caches, environments, backups, archives and secrets even within code trees.
 __pycache__/
 *.py[cod]
 .venv/
 .venv-*/
 venv/
+env/
 .pytest_cache/
 .mypy_cache/
-
-# Secrets
+.ruff_cache/
+.ipynb_checkpoints/
+*.backup
+*.backup-*
+*.bak
+*.tmp
+*.temp
+*~
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*.keras
+*.h5
+*.hdf5
+*.ckpt*
+*.weights.*
+*.onnx
+*.tflite
+*.pt
+*.pth
 .env
 .env.*
-!.env.example
 *.pem
 *.key
-
-# IDE / OS
+id_rsa
+id_ed25519
+credentials.json
+secrets.*
+.streamlit/secrets.toml
+.aws/
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
 
-# Datasets
-dataset/
-dataset_group_safe/
-dataset_group_conservative/
-segmentation_dataset/
-reference_segmentation/
-*.dcm
+# Only the reviewed aggregate artifacts below are additionally allowed.
+# Sample-level CSVs stay local; excluded from the index for future source releases.
 
-# Model weights
-*.keras
-*.h5
-*.hdf5
-*.ckpt
-*.weights
+# Existing reviewed aggregate artifacts: exact paths only (43 files).
+!/experiments/
+!/experiments/**/
+!/experiments/classification_ablation/masked/finetune_history.csv
+!/experiments/classification_ablation/masked/transfer_history.csv
+!/experiments/classification_ablation/original/finetune_history.csv
+!/experiments/classification_ablation/original/transfer_history.csv
+!/experiments/classification_ablation/reports/masked_classification_report.txt
+!/experiments/classification_ablation/reports/masked_confusion_matrix.csv
+!/experiments/classification_ablation/reports/original_classification_report.txt
+!/experiments/classification_ablation/reports/original_confusion_matrix.csv
+!/experiments/classification_error_analysis/validation/baseline_cnn_calibration.csv
+!/experiments/classification_error_analysis/validation/baseline_cnn_classification_report.json
+!/experiments/classification_error_analysis/validation/baseline_cnn_confusion_matrix.csv
+!/experiments/classification_error_analysis/validation/contrast_sensitivity_finetuned/metrics.json
+!/experiments/classification_error_analysis/validation/contrast_sensitivity_finetuned/transition_analysis/class_changes.csv
+!/experiments/classification_error_analysis/validation/contrast_sensitivity_finetuned/transition_analysis/prediction_transition_high.csv
+!/experiments/classification_error_analysis/validation/contrast_sensitivity_finetuned/transition_analysis/prediction_transition_low.csv
+!/experiments/classification_error_analysis/validation/ensemble_analysis/ensemble_reports.json
+!/experiments/classification_error_analysis/validation/ensemble_analysis/ensemble_summary.csv
+!/experiments/classification_error_analysis/validation/finetuned_mobilenetv2_calibration.csv
+!/experiments/classification_error_analysis/validation/finetuned_mobilenetv2_classification_report.json
+!/experiments/classification_error_analysis/validation/finetuned_mobilenetv2_confusion_matrix.csv
+!/experiments/classification_error_analysis/validation/image_quality_analysis/quality_summary.csv
+!/experiments/classification_error_analysis/validation/image_quality_analysis/standardized_256/descriptive_effect_sizes_256.csv
+!/experiments/classification_error_analysis/validation/image_quality_analysis/standardized_256/quality_summary_256.csv
+!/experiments/classification_error_analysis/validation/image_quality_analysis/standardized_256/strict_group_comparison_256.csv
+!/experiments/classification_error_analysis/validation/mobilenetv2_calibration.csv
+!/experiments/classification_error_analysis/validation/mobilenetv2_classification_report.json
+!/experiments/classification_error_analysis/validation/mobilenetv2_confusion_matrix.csv
+!/experiments/classification_error_analysis/validation/model_summary.csv
+!/experiments/classification_error_analysis/validation/shared_error_analysis/class_comparison.csv
+!/experiments/classification_error_analysis/validation/shared_error_analysis/visual_review/missing_images.txt
+!/experiments/classification_error_analysis/validation/weighted_ensemble_analysis/weighted_summary.csv
+!/experiments/conservative_group_training/control/history_finetuned.json
+!/experiments/conservative_group_training/control/history_transfer.json
+!/experiments/conservative_group_training/control/test_metrics.json
+!/experiments/conservative_group_training/control/test_probabilities.npz
+!/experiments/conservative_group_training/control/test_probability_metrics.json
+!/experiments/conservative_group_training/control/validation_metrics.json
+!/experiments/conservative_group_training/figures/confusion_matrix.pdf
+!/experiments/conservative_group_training/figures/confusion_matrix.png
+!/experiments/conservative_group_training/figures/precision_recall_curves.pdf
+!/experiments/conservative_group_training/figures/precision_recall_curves.png
+!/experiments/conservative_group_training/figures/roc_curves.pdf
+!/experiments/conservative_group_training/figures/roc_curves.png
 
-# Archives and backups
-*.zip
-*.bak
-*.tmp
-backups/
+# Exact sample-level CSV exclusions from GITHUB_PUBLICATION_PLAN.md (20 files).
+# Keep local contents. These 20 paths are removed from the index; history is unchanged.
+/experiments/classification_error_analysis/validation/baseline_cnn_errors.csv
+/experiments/classification_error_analysis/validation/baseline_cnn_predictions.csv
+/experiments/classification_error_analysis/validation/contrast_sensitivity_finetuned/per_image_contrast_changes.csv
+/experiments/classification_error_analysis/validation/contrast_sensitivity_finetuned/transition_analysis/changed_predictions_high.csv
+/experiments/classification_error_analysis/validation/contrast_sensitivity_finetuned/transition_analysis/changed_predictions_low.csv
+/experiments/classification_error_analysis/validation/contrast_sensitivity_finetuned/transition_analysis/matched_shared_error_overlap.csv
+/experiments/classification_error_analysis/validation/contrast_sensitivity_finetuned/transition_analysis/shared_errors_fixed_high.csv
+/experiments/classification_error_analysis/validation/contrast_sensitivity_finetuned/transition_analysis/shared_errors_fixed_low.csv
+/experiments/classification_error_analysis/validation/ensemble_analysis/ensemble_predictions.csv
+/experiments/classification_error_analysis/validation/finetuned_mobilenetv2_errors.csv
+/experiments/classification_error_analysis/validation/finetuned_mobilenetv2_predictions.csv
+/experiments/classification_error_analysis/validation/image_quality_analysis/image_quality_per_image.csv
+/experiments/classification_error_analysis/validation/image_quality_analysis/standardized_256/quality_per_image_256.csv
+/experiments/classification_error_analysis/validation/mobilenetv2_errors.csv
+/experiments/classification_error_analysis/validation/mobilenetv2_predictions.csv
+/experiments/classification_error_analysis/validation/shared_error_analysis/all_image_comparisons.csv
+/experiments/classification_error_analysis/validation/shared_error_analysis/all_three_wrong.csv
+/experiments/classification_error_analysis/validation/shared_error_analysis/finetuned_only_correct.csv
+/experiments/classification_error_analysis/validation/shared_error_analysis/model_disagreements.csv
+/experiments/classification_error_analysis/validation/weighted_ensemble_analysis/weighted_predictions.csv
 
-# Local reports and caches
-reports/project_archive/
-
-# Medical visual review images
-experiments/classification_error_analysis/validation/shared_error_analysis/visual_review/*.jpg
-
-# GitHub release packages
-release_models_*/
+# Local audit/test reports are not publication artifacts.
+/LOCAL_INTEGRATION_REVIEW.md
+/GITHUB_RELEASE_READINESS_AUDIT.md
+/GITHUB_PREPUBLICATION_TEST_REPORT.md
+/GITHUB_PUBLICATION_PLAN.md
+/GITHUB_FINAL_LOCAL_FIX_REPORT.md
