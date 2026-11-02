@@ -1,9 +1,18 @@
+# Python 3.12 / Windows CPU reference setup; not a cross-platform lock file.
+# Keep the existing TensorFlow version for saved-model compatibility.
+# tf.keras is used throughout; TensorFlow resolves its Keras dependency.
 tensorflow==2.21.0
 streamlit==1.65.0
 numpy==1.26.2
 pandas==2.1.3
 Pillow==10.2.0
 scipy==1.16.2
+altair==6.3.0
+
+# Existing training, evaluation and figure-generation scripts also use these.
 matplotlib==3.8.3
 scikit-learn==1.7.2
-altair==6.3.0
+
+# cv2: scripts/evaluation/analyze_image_quality.py and analyze_quality_standardized.py.
+# Resolve together with the NumPy constraint above; no additional exact-version pin.
+opencv-python>=4.10,<4.12
